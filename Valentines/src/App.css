@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap");
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  text-align: center;
+  padding-top: 32px;
+  overflow: hidden;
+  background: linear-gradient(#ffe6f0, #fff);
+  font-family: "Comic Neue", cursive;
+}
+
+.headline {
+  font-size: 26px;
+  margin-bottom: 36px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.yes {
+  background-color: #4caf50;
+  color: white;
+}
+
+.no {
+  background-color: #e53935;
+  color: white;
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nailong {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  pointer-events: none;
+  transition: bottom 0.4s ease;
+}
+
+.sticker {
+  position: absolute;
+  width: 80px;
+  pointer-events: none;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ===== Celebration Overlay ===== */
+
+.celebrationOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(255, 230, 240, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: 40px;
+}
+
+.celebrationStickers {
+  display: flex;
+  gap: 24px;
+}
+
+.celebrationStickers img {
+  width: 120px;
+  animation: floatUp 2s ease-out infinite alternate;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+.celebrationText {
+  font-size: 24px;
+  color: #ff4d8d;
+  text-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
+}
+
+.loveLetter {
+  width: 80%;
+  max-width: 600px;
+  height: 200px;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 18px;
+  resize: none;
+  border: 2px solid #ff69b4;
+  background-color: #fff0f5;
+  font-family: "Comic Neue", cursive;
+  color: #333;
+  line-height: 1.5;
+}
+
+.proceedBtn {
+  font-size: 18px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background-color: #ff69b4;
+  color: white;
+}
+
+.proceedBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #ff69b4aa;
+}
