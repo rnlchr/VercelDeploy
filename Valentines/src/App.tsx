@@ -83,7 +83,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Will you be my Valentine? 💘</h1>
+      <h1 className="headline">Will you be my Valentine? 💘</h1>
 
       <div
         className="buttons"
