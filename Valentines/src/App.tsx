@@ -25,7 +25,7 @@ function App() {
   const [yesClicked, setYesClicked] = useState(false);
 
   const noTexts = [
-    "No 💔",
+    "NO",
     "Really? 😢",
     "Please? 🥺",
     "Not even for 2 dolla? 😭",
@@ -37,7 +37,7 @@ function App() {
   const isFinalStage = noClicks >= noTexts.length - 1;
 
   let currentNoText = noTexts[Math.min(noClicks, noTexts.length - 1)];
-  if (firstEmojiClick && isFinalStage) currentNoText = "No 💔";
+  if (firstEmojiClick && isFinalStage) currentNoText = "NO";
 
   const handleNo = () => {
     if (!isFinalStage) {
@@ -83,7 +83,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="headline">Will you be my Valentine? 💘</h1>
+      <h1 className="headline">Will you be my Valentine?</h1>
 
       <div
         className="buttons"
@@ -100,7 +100,7 @@ function App() {
             animationDuration: `${Math.max(1 - totalNoClicks * 0.05, 0.3)}s`,
           }}
         >
-          Yes 💕
+          YES
         </button>
 
         <button
@@ -163,7 +163,7 @@ function App() {
               )
             }
           >
-            Proceed to date itinerary 💕
+            Proceed to date itinerary:
           </button>
         </div>
       )}
