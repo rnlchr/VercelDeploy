@@ -97,7 +97,7 @@ function App() {
     setStickers((prev) => [
       ...prev.slice(-MAX_STICKERS + 1),
       {
-        id: crypto.randomUUID(),
+        id: `${Date.now()}-${Math.random()}`,
         x: Math.floor(Math.random() * 80) + 10,
         y: Math.floor(Math.random() * 80) + 10,
         src: stickerArray[Math.floor(Math.random() * stickerArray.length)],
@@ -112,6 +112,7 @@ function App() {
   const nailongBottom =
     noClicks < 2 ? BASE_BOTTOM : BASE_BOTTOM + (noClicks - 1) * STEP;
 
+  /* ===== CELEBRATION PAGE ===== */
   if (page === "celebration") {
     return (
       <div className="container fadeIn">
@@ -130,7 +131,7 @@ function App() {
               <textarea
                 className="loveLetter"
                 readOnly
-                value={`To: The Love of my Life,\n\nMy love, it has been 334 days since we last met, and 167 days since we officially became a couple, and in those days I have been nothing but happy. We had our ups and downs but despite all of that we still remained with each other, fighting for each other, and choosing each other every single day. In a world full of chaos you are my peace, my home away from home, my everything. I Love You So Much baby!.`}
+                value={`To: The Love of my Life,\n\nMy love, it has been 334 days since we last met, and 167 days since we officially became a couple, and in those days I have been nothing but happy. We had our ups and downs but despite all of that we still remained with each other, fighting for each other, and choosing each other every single day. In a world full of chaos you are my peace, my home away from home, my everything. I Love You So Much baby!`}
               />
 
               <button
@@ -151,6 +152,7 @@ function App() {
     );
   }
 
+  /* ===== QUESTION PAGE ===== */
   return (
     <div className={`container ${fadingOut ? "fadeOut" : "fadeIn"}`}>
       <h1 className="headline">Will you be my Valentine?</h1>
