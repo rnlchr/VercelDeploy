@@ -112,7 +112,6 @@ function App() {
   const nailongBottom =
     noClicks < 2 ? BASE_BOTTOM : BASE_BOTTOM + (noClicks - 1) * STEP;
 
-  /* ===== PAGE 2 ===== */
   if (page === "celebration") {
     return (
       <div className="container fadeIn">
@@ -131,7 +130,7 @@ function App() {
               <textarea
                 className="loveLetter"
                 readOnly
-                value={`To: The Love of my Life,\n\nMy love, it has been 167 days since we officially became a couple, and in those 167 days I have been nothing but happy. We had our ups and downs but despite all of that we still remained with each other, fighting for each other, and choosing each other every single day. In a world full of chaos you are my peace, my home away from home, my everything. I Love You So Much baby, I choose you, now and forever.`}
+                value={`To: The Love of my Life,\n\nMy love, it has been 334 days since we last met, and 167 days since we officially became a couple, and in those days I have been nothing but happy. We had our ups and downs but despite all of that we still remained with each other, fighting for each other, and choosing each other every single day. In a world full of chaos you are my peace, my home away from home, my everything. I Love You So Much baby!.`}
               />
 
               <button
@@ -152,7 +151,6 @@ function App() {
     );
   }
 
-  /* ===== PAGE 1 ===== */
   return (
     <div className={`container ${fadingOut ? "fadeOut" : "fadeIn"}`}>
       <h1 className="headline">Will you be my Valentine?</h1>
