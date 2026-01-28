@@ -16,9 +16,11 @@ type Sticker = {
   src: string;
 };
 
+/* ===== CONFIG ===== */
 const BASE_BOTTOM = -150;
 const STEP = 40;
 const MAX_STICKERS = 20;
+const TURN_NO_INTO_YES_AT = 40; // 👈 change this anytime
 
 function App() {
   const [noClicks, setNoClicks] = useState(0);
@@ -28,8 +30,6 @@ function App() {
   const [stickers, setStickers] = useState<Sticker[]>([]);
   const [yesClicked, setYesClicked] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
-  const [hideNo, setHideNo] = useState(false);
-  const [easterEgg, setEasterEgg] = useState(false);
 
   const noTexts = useMemo(
     () => [
@@ -45,14 +45,21 @@ function App() {
   );
 
   const isFinalStage = noClicks >= noTexts.length - 1;
+  const noHasTurnedIntoYes = totalNoClicks >= TURN_NO_INTO_YES_AT;
 
   let currentNoText = noTexts[Math.min(noClicks, noTexts.length - 1)];
   if (firstEmojiClick && isFinalStage) currentNoText = "NO";
 
+  const handleYes = () => {
+    if (yesClicked) return;
+    setYesClicked(true);
+    setTimeout(() => setShowLetter(true), 1200);
+  };
+
   const handleNo = () => {
-    if (totalNoClicks >= 20) {
-      setHideNo(true);
-      setEasterEgg(true);
+    // 🔴 NO button becomes YES after threshold
+    if (noHasTurnedIntoYes) {
+      handleYes();
       return;
     }
 
@@ -77,31 +84,20 @@ function App() {
     setTotalNoClicks((p) => p + 1);
 
     const stickerArray = [sticker1, sticker2, sticker3, sticker4];
-    setStickers((prev) =>
-      [
-        ...prev.slice(-MAX_STICKERS + 1),
-        {
-          id: crypto.randomUUID(),
-          x: Math.floor(Math.random() * 80) + 10,
-          y: Math.floor(Math.random() * 80) + 10,
-          src: stickerArray[Math.floor(Math.random() * stickerArray.length)],
-        },
-      ]
-    );
-  };
-
-  const handleYes = () => {
-    setYesClicked(true);
-    setTimeout(() => setShowLetter(true), 1200);
+    setStickers((prev) => [
+      ...prev.slice(-MAX_STICKERS + 1),
+      {
+        id: crypto.randomUUID(),
+        x: Math.floor(Math.random() * 80) + 10,
+        y: Math.floor(Math.random() * 80) + 10,
+        src: stickerArray[Math.floor(Math.random() * stickerArray.length)],
+      },
+    ]);
   };
 
   // Lock scroll when celebration shows
   useEffect(() => {
-    if (yesClicked) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = yesClicked ? "hidden" : "auto";
   }, [yesClicked]);
 
   const yesScale = Math.min(1 + totalNoClicks * 0.15, 3.5);
@@ -121,6 +117,7 @@ function App() {
           gap: isFinalStage ? "150px" : `${Math.max(24, yesScale * 60)}px`,
         }}
       >
+        {/* YES BUTTON */}
         <button
           className="yes pulse"
           disabled={yesClicked}
@@ -137,25 +134,25 @@ function App() {
           YES
         </button>
 
-        {!hideNo && (
-          <button
-            className="no"
-            disabled={yesClicked}
-            onClick={handleNo}
-            style={{
-              transform: `scale(${noScale})`,
-              position: "relative",
-              left: `${noPosition.x}px`,
-              top: `${noPosition.y}px`,
-              transition:
-                "transform 0.3s ease, left 0.3s ease, top 0.3s ease",
-            }}
-          >
-            {currentNoText}
-          </button>
-        )}
+        {/* NO / RED YES BUTTON */}
+        <button
+          className="no"
+          disabled={yesClicked}
+          onClick={handleNo}
+          style={{
+            transform: `scale(${noScale})`,
+            position: "relative",
+            left: `${noPosition.x}px`,
+            top: `${noPosition.y}px`,
+            transition:
+              "transform 0.3s ease, left 0.3s ease, top 0.3s ease",
+          }}
+        >
+          {noHasTurnedIntoYes ? "YES" : currentNoText}
+        </button>
       </div>
 
+      {/* Nailong */}
       <img
         src={nailong}
         alt="Crying Nailong"
@@ -166,6 +163,7 @@ function App() {
         }}
       />
 
+      {/* Stickers */}
       {stickers.map((s) => (
         <img
           key={s.id}
@@ -180,12 +178,7 @@ function App() {
         />
       ))}
 
-      {easterEgg && (
-        <div className="easterEgg">
-          OKAY OKAY 😭 you win… just press YES already 💗
-        </div>
-      )}
-
+      {/* Celebration */}
       {yesClicked && (
         <div className="celebrationOverlay">
           <div className="celebrationStickers">
