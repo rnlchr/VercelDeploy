@@ -1,13 +1,41 @@
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap");
 
 .container {
-  position: relative;
   min-height: 100vh;
-  text-align: center;
-  padding-top: 32px;
-  overflow: hidden;
   background: linear-gradient(#ffe6f0, #fff);
   font-family: "Comic Neue", cursive;
+  text-align: center;
+  padding-top: 32px;
+}
+
+/* ===== Fade Animations ===== */
+
+.fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.fadeOut {
+  animation: fadeOut 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 /* ===== Headline ===== */
@@ -30,14 +58,8 @@ button {
   border: none;
   border-radius: 12px;
   padding: 14px 24px;
-  cursor: pointer;
   font-weight: bold;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .yes {
@@ -50,22 +72,16 @@ button:disabled {
   color: white;
 }
 
-/* ===== Pulse Animation ===== */
+/* ===== Pulse ===== */
 
 .pulse {
   animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* ===== Nailong ===== */
@@ -75,8 +91,8 @@ button:disabled {
   left: 50%;
   transform: translateX(-50%);
   width: 300px;
-  pointer-events: none;
   transition: bottom 0.4s ease, opacity 0.4s ease;
+  pointer-events: none;
 }
 
 /* ===== Stickers ===== */
@@ -88,21 +104,14 @@ button:disabled {
 }
 
 @keyframes popIn {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
+  from { transform: scale(0); }
+  to { transform: scale(1); }
 }
 
-/* ===== Celebration Overlay ===== */
+/* ===== Celebration Page ===== */
 
-.celebrationOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 50;
-  background: rgba(255, 230, 240, 0.92);
+.celebrationPage {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,24 +126,17 @@ button:disabled {
 
 .celebrationStickers img {
   width: 120px;
-  animation: floatUp 2s ease-out infinite alternate;
+  animation: floatUp 2s ease-in-out infinite alternate;
 }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-20px);
-  }
+  from { transform: translateY(0); }
+  to { transform: translateY(-20px); }
 }
 
 .celebrationText {
   font-size: 24px;
   color: #ff4d8d;
-  text-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
-  text-align: center;
-  padding: 0 16px;
 }
 
 /* ===== Love Letter ===== */
@@ -146,12 +148,9 @@ button:disabled {
   border-radius: 12px;
   padding: 16px;
   font-size: 18px;
-  resize: none;
   border: 2px solid #ff69b4;
   background-color: #fff0f5;
-  font-family: "Comic Neue", cursive;
-  color: #333;
-  line-height: 1.5;
+  resize: none;
 }
 
 /* ===== Proceed Button ===== */
@@ -166,41 +165,4 @@ button:disabled {
 
 .proceedBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px #ff69b4aa;
-}
-
-/* ===== Easter Egg ===== */
-
-.easterEgg {
-  margin-top: 24px;
-  font-size: 20px;
-  color: #ff4d8d;
-  animation: pulse 1s infinite;
-  text-align: center;
-  padding: 0 16px;
-}
-
-/* ===== Mobile Responsiveness ===== */
-
-@media (max-width: 768px) {
-  .headline {
-    font-size: 40px;
-  }
-
-  .nailong {
-    width: 220px;
-  }
-
-  .sticker {
-    width: 60px;
-  }
-
-  .celebrationStickers img {
-    width: 90px;
-  }
-
-  .loveLetter {
-    font-size: 16px;
-    height: 180px;
-  }
 }
