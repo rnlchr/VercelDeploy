@@ -142,7 +142,7 @@ function App() {
                   )
                 }
               >
-                Proceed to date itinerary:
+                Proceed to date plan:
               </button>
             </>
           )}
