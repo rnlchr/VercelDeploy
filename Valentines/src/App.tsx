@@ -20,15 +20,18 @@ type Sticker = {
 const BASE_BOTTOM = -150;
 const STEP = 40;
 const MAX_STICKERS = 20;
-const TURN_NO_INTO_YES_AT = 40; // 👈 change this anytime
+const TURN_NO_INTO_YES_AT = 40;
+const FADE_DURATION = 600; // ms
 
 function App() {
+  const [page, setPage] = useState<"question" | "celebration">("question");
+  const [fadingOut, setFadingOut] = useState(false);
+
   const [noClicks, setNoClicks] = useState(0);
   const [totalNoClicks, setTotalNoClicks] = useState(0);
   const [noPosition, setNoPosition] = useState({ x: 0, y: 0 });
   const [firstEmojiClick, setFirstEmojiClick] = useState(false);
   const [stickers, setStickers] = useState<Sticker[]>([]);
-  const [yesClicked, setYesClicked] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
 
   const noTexts = useMemo(
@@ -50,14 +53,21 @@ function App() {
   let currentNoText = noTexts[Math.min(noClicks, noTexts.length - 1)];
   if (firstEmojiClick && isFinalStage) currentNoText = "NO";
 
+  const startTransitionToCelebration = () => {
+    setFadingOut(true);
+    setTimeout(() => {
+      setPage("celebration");
+      setShowLetter(false);
+      setTimeout(() => setShowLetter(true), 800);
+    }, FADE_DURATION);
+  };
+
   const handleYes = () => {
-    if (yesClicked) return;
-    setYesClicked(true);
-    setTimeout(() => setShowLetter(true), 1200);
+    if (fadingOut) return;
+    startTransitionToCelebration();
   };
 
   const handleNo = () => {
-    // 🔴 NO button becomes YES after threshold
     if (noHasTurnedIntoYes) {
       handleYes();
       return;
@@ -95,11 +105,6 @@ function App() {
     ]);
   };
 
-  // Lock scroll when celebration shows
-  useEffect(() => {
-    document.body.style.overflow = yesClicked ? "hidden" : "auto";
-  }, [yesClicked]);
-
   const yesScale = Math.min(1 + totalNoClicks * 0.15, 3.5);
   const yesFontSize = Math.min(18 * yesScale, 64);
   const noScale = Math.max(1 - noClicks * 0.12, 0.45);
@@ -107,80 +112,11 @@ function App() {
   const nailongBottom =
     noClicks < 2 ? BASE_BOTTOM : BASE_BOTTOM + (noClicks - 1) * STEP;
 
-  return (
-    <div className="container">
-      <h1 className="headline">Will you be my Valentine?</h1>
-
-      <div
-        className="buttons"
-        style={{
-          gap: isFinalStage ? "150px" : `${Math.max(24, yesScale * 60)}px`,
-        }}
-      >
-        {/* YES BUTTON */}
-        <button
-          className="yes pulse"
-          disabled={yesClicked}
-          onClick={handleYes}
-          style={{
-            transform: `scale(${yesScale})`,
-            fontSize: `${yesFontSize}px`,
-            animationDuration: `${Math.max(
-              1 - totalNoClicks * 0.05,
-              0.3
-            )}s`,
-          }}
-        >
-          YES
-        </button>
-
-        {/* NO / RED YES BUTTON */}
-        <button
-          className="no"
-          disabled={yesClicked}
-          onClick={handleNo}
-          style={{
-            transform: `scale(${noScale})`,
-            position: "relative",
-            left: `${noPosition.x}px`,
-            top: `${noPosition.y}px`,
-            transition:
-              "transform 0.3s ease, left 0.3s ease, top 0.3s ease",
-          }}
-        >
-          {noHasTurnedIntoYes ? "YES" : currentNoText}
-        </button>
-      </div>
-
-      {/* Nailong */}
-      <img
-        src={nailong}
-        alt="Crying Nailong"
-        className="nailong"
-        style={{
-          opacity: Math.min(noClicks * 0.15, 1),
-          bottom: `${nailongBottom}px`,
-        }}
-      />
-
-      {/* Stickers */}
-      {stickers.map((s) => (
-        <img
-          key={s.id}
-          src={s.src}
-          className="sticker"
-          alt="sticker"
-          style={{
-            left: `${s.x}%`,
-            top: `${s.y}%`,
-            animation: "popIn 0.3s ease-out",
-          }}
-        />
-      ))}
-
-      {/* Celebration */}
-      {yesClicked && (
-        <div className="celebrationOverlay">
+  /* ===== PAGE 2 ===== */
+  if (page === "celebration") {
+    return (
+      <div className="container fadeIn">
+        <div className="celebrationPage">
           <div className="celebrationStickers">
             <img src={kiss} alt="kiss" />
             <img src={yay} alt="yay" />
@@ -212,7 +148,69 @@ function App() {
             </>
           )}
         </div>
-      )}
+      </div>
+    );
+  }
+
+  /* ===== PAGE 1 ===== */
+  return (
+    <div className={`container ${fadingOut ? "fadeOut" : "fadeIn"}`}>
+      <h1 className="headline">Will you be my Valentine?</h1>
+
+      <div
+        className="buttons"
+        style={{
+          gap: isFinalStage ? "150px" : `${Math.max(24, yesScale * 60)}px`,
+        }}
+      >
+        <button
+          className="yes pulse"
+          onClick={handleYes}
+          style={{
+            transform: `scale(${yesScale})`,
+            fontSize: `${yesFontSize}px`,
+          }}
+        >
+          YES
+        </button>
+
+        <button
+          className="no"
+          onClick={handleNo}
+          style={{
+            transform: `scale(${noScale})`,
+            position: "relative",
+            left: `${noPosition.x}px`,
+            top: `${noPosition.y}px`,
+          }}
+        >
+          {noHasTurnedIntoYes ? "YES" : currentNoText}
+        </button>
+      </div>
+
+      <img
+        src={nailong}
+        alt="Crying Nailong"
+        className="nailong"
+        style={{
+          opacity: Math.min(noClicks * 0.15, 1),
+          bottom: `${nailongBottom}px`,
+        }}
+      />
+
+      {stickers.map((s) => (
+        <img
+          key={s.id}
+          src={s.src}
+          className="sticker"
+          alt="sticker"
+          style={{
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            animation: "popIn 0.3s ease-out",
+          }}
+        />
+      ))}
     </div>
   );
 }
