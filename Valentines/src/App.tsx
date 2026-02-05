@@ -138,7 +138,7 @@ function App() {
                 className="proceedBtn"
                 onClick={() =>
                   window.open(
-                    "https://docs.google.com/document/d/1uwBCnMSFAwHKwDIEJlk2LB6W1IAe6YFSg0kCyIYk1h0/view",
+                    "https://www.canva.com/design/DAG_tKsH4co/-OmKAjVlyHDFkaheRy47Rg/edit?utm_content=DAG_tKsH4co&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
                     "_blank"
                   )
                 }
